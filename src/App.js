@@ -1,6 +1,7 @@
 import React from "react";
 import Todos from "./Components/Todos";
 import AddTodo from "./Components/AddTodo";
+import Search from "./Components/Search";
 import * as uuid from "uuid";
 import axios from "axios";
 
@@ -10,8 +11,44 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      todos: []
+      todos: [],
+      todosClone: []
     };
+
+    this.searchStart = undefined;
+  }
+
+  handleSearch = e => {
+    if (this.searchStart) clearTimeout(this.searchStart);
+
+    e.persist();
+
+    this.searchStart = setTimeout(() => {
+      if (e.target.value.length <= 0) {
+        this.setState({
+          todos: this.state.todosClone
+        });
+        return;
+      }
+
+      this.searchTodo(e);
+    }, 300);
+  };
+
+  searchTodo(e) {
+    let searchString = e.target.value;
+
+    searchString = searchString.trim();
+
+    if (searchString.length === 0) return;
+
+    // Update todos on user search basis here...
+    this.setState({
+      todos: this.state.todosClone.filter(list => {
+        if (list.title.toLowerCase().includes(searchString.toLowerCase()))
+          return list;
+      })
+    });
   }
 
   // Toggle Todo
@@ -53,7 +90,8 @@ class App extends React.Component {
       .get("https://jsonplaceholder.typicode.com/todos?_limit=10")
       .then(res =>
         this.setState({
-          todos: res.data
+          todos: res.data,
+          todosClone: res.data
         })
       );
   }
@@ -62,6 +100,9 @@ class App extends React.Component {
     return (
       <div className="container" style={{ marginTop: "35px" }}>
         <h1>React Todo List</h1>
+
+        <Search searchTodo={this.handleSearch} />
+
         <AddTodo addTodo={this.addTodo} />
         <Todos
           markComplete={this.markComplete}

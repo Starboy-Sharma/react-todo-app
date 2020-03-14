@@ -3,3 +3,4 @@
 3. Create Backend for todo App with Mongo DB.
 4. Categorize Todo App with their Creation Date.
 5. Generate a weekly status report.
+6. When there is no todo left show a message.
