@@ -2,6 +2,7 @@ import React from "react";
 import Todos from "./Components/Todos";
 import AddTodo from "./Components/AddTodo";
 import Search from "./Components/Search";
+import Loader from "./Components/Loader";
 import * as uuid from "uuid";
 import axios from "axios";
 
@@ -12,7 +13,8 @@ class App extends React.Component {
     super();
     this.state = {
       todos: [],
-      todosClone: []
+      todosClone: [],
+      loading: true
     };
 
     this.searchStart = undefined;
@@ -80,37 +82,50 @@ class App extends React.Component {
 
     // Update State
     this.setState({
-      todos: [...this.state.todos, newTodo]
+      todos: [newTodo, ...this.state.todos],
+      todosClone: [newTodo, ...this.state.todos]
     });
   };
 
   // Before Component Mount On DOM
   componentDidMount() {
+    console.log("Show loader");
+
     axios
       .get("https://jsonplaceholder.typicode.com/todos?_limit=10")
-      .then(res =>
+      .then(res => {
         this.setState({
           todos: res.data,
           todosClone: res.data
-        })
-      );
+        });
+        console.log("hide loader");
+        this.setState({
+          loading: false
+        });
+      });
   }
 
   render() {
-    return (
-      <div className="container" style={{ marginTop: "35px" }}>
-        <h1>React Todo List</h1>
+    const { loading } = this.state;
+    console.log("Render Happens Here");
+    if (this.state.loading) {
+      return <Loader />;
+    } else {
+      return (
+        <div className="container" style={{ marginTop: "35px" }}>
+          <h1 style={{ color: "#ef5046" }}>React Todo List</h1>
 
-        <Search searchTodo={this.handleSearch} />
+          <Search searchTodo={this.handleSearch} />
 
-        <AddTodo addTodo={this.addTodo} />
-        <Todos
-          markComplete={this.markComplete}
-          deleteTodo={this.deleteTodo}
-          todos={this.state.todos}
-        />
-      </div>
-    );
+          <AddTodo addTodo={this.addTodo} />
+          <Todos
+            markComplete={this.markComplete}
+            deleteTodo={this.deleteTodo}
+            todos={this.state.todos}
+          />
+        </div>
+      );
+    }
   }
 }
 

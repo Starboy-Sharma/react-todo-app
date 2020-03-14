@@ -8,6 +8,7 @@ body {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   line-height: 1.4;
+  background-color: #100e16;
 }
 
 a {
@@ -33,4 +34,65 @@ input {
 
 .form-control {
   margin-right: 10px;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #ef5046;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem #ef5046;
+}
+
+/* Loader */
+.spinner-box {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* PULSE BUBBLES */
+
+.pulse-container {
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pulse-bubble {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #3ff9dc;
+}
+
+.pulse-bubble-1 {
+  animation: pulse 0.4s ease 0s infinite alternate;
+}
+.pulse-bubble-2 {
+  animation: pulse 0.4s ease 0.2s infinite alternate;
+}
+.pulse-bubble-3 {
+  animation: pulse 0.4s ease 0.4s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.25;
+    transform: scale(0.75);
+  }
 }

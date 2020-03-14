@@ -31,6 +31,7 @@ class AddTodo extends React.Component {
             type="text"
             name="title"
             autoComplete="off"
+            placeholder="I will keep your task..."
             onChange={this.handleTitle}
             value={this.state.title}
             className="form-control col-md-10 col-sm-10 col-lg-11"
