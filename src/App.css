@@ -96,3 +96,9 @@ input {
     transform: scale(0.75);
   }
 }
+
+footer {
+  margin-bottom: 20px;
+  color: wheat;
+  font-style: italic;
+}
