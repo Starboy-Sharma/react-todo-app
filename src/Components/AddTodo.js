@@ -19,7 +19,7 @@ class AddTodo extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     e.persist();
-    this.props.addTodo(this.state.title);
+    if (this.state.title.trim().length) this.props.addTodo(this.state.title);
     this.setState({ title: "" });
   };
 

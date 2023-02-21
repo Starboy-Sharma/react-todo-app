@@ -93,17 +93,34 @@ class App extends React.Component {
   // Before Component Mount On DOM
   componentDidMount() {
     console.log("Show loader");
+    const localTodos = JSON.parse(
+      window.localStorage.getItem("react-todo-app_todosClone")
+    );
 
-    axios
-      .get("https://jsonplaceholder.typicode.com/todos?_limit=10")
-      .then((res) => {
-        this.setState({
-          todos: res.data,
-          todosClone: res.data,
-          loading: false,
-        });
-        console.log("hide loader");
+    if (localTodos && localTodos.length) {
+      this.setState({
+        todos: localTodos,
+        todosClone: localTodos,
+        loading: false,
       });
+      console.log("hide loader");
+    } else {
+      axios
+        .get("https://jsonplaceholder.typicode.com/todos?_limit=5")
+        .then((res) => {
+          this.setState({
+            todos: res.data,
+            todosClone: res.data,
+            loading: false,
+          });
+          console.log("hide loader");
+        });
+    }
+  }
+
+  componentDidUpdate() {
+    const localTodos = this.state.todosClone.filter(todo => !todo.status)
+    window.localStorage.setItem('react-todo-app_todosClone', JSON.stringify(localTodos))
   }
 
   render() {
